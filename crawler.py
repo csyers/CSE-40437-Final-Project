@@ -36,7 +36,7 @@ class KeywordCrawler(tweepy.StreamListener):
         
         # for every word in the tweet that matches the keyword list, write to that json file
         for word in self.keywords:
-            if word in tweet_json['text']:
+            if word in tweet_json['text'].lower():
                 self.write_tweet_to_file(word,tweet_json)
 
         return True
@@ -46,7 +46,7 @@ class KeywordCrawler(tweepy.StreamListener):
         destination_file = data_path + word + ".json"
         with open(destination_file, 'a+') as f:
             line = json.dumps(tweet)
-            f.write(line + "\n")
+            f.write(line + '\n')
             
             
 
