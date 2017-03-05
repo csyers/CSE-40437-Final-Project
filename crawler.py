@@ -24,10 +24,10 @@ class KeywordCrawler(tweepy.StreamListener):
         self.count += 1
         if self.count % 1000 == 0:
             self.count = 0
-            print("+", end='')
+            sys.stdout.write('+')
             sys.stdout.flush()
         elif self.count % 100 == 0:
-            print(".", end='')
+            sys.stdout.write('.')
             sys.stdout.flush()
 
         # get the json version of the tweet
