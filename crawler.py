@@ -3,7 +3,6 @@
 # crawler.py - given a series of keywords, start a stream for each and collect tweets with those keywords
 # February 27, 2017
 
-from http.client import IncompleteRead
 import tweepy
 import json
 import sys
@@ -84,7 +83,7 @@ def main():
         try:
             stream = tweepy.Stream(auth, crawler)
             stream.filter(track=keywords)
-        except IncompleteRead:
+        except:
             pass
    
 if __name__ == '__main__':
