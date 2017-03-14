@@ -36,7 +36,7 @@ class KeywordCrawler(tweepy.StreamListener):
         # for every word in the tweet that matches the keyword list, write to that json file
         for word in self.keywords:
             if word in tweet_json['text'].lower():
-                tweet_json_limitied = tweet_json['text'] + "::" + str(tweet_json['id']) + "::" + tweet_json['created_at']
+                tweet_json_limitied = tweet_json['text'].replace('\n',' ') + "::" + str(tweet_json['id']) + "::" + tweet_json['created_at']
                 self.write_tweet_to_file(word,tweet_json_limitied)
 
         return True
