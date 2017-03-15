@@ -25,7 +25,7 @@ def main():
         tweet_data = f.read()
 
     # split the string into a list of likely tweets
-    split_on_date = tweet_data.split(sep='2017\n')
+    split_on_date = tweet_data.split(sep='2017"\n')
 
     with open(outfile, 'w+') as f:
         for tweet in split_on_date:
@@ -37,8 +37,8 @@ def main():
             else:
                 # write normal tweets in the right format
                 tweet_json_limited = {}
-                tweet_json_limited['text'] = separated[0]
-                tweet_json_limited['id'] = separated[1]
+                tweet_json_limited['text'] = separated[0][1:]
+                tweet_json_limited['id'] = int(separated[1])
                 tweet_json_limited['created_at'] = separated[2] + '2017'
                 json.dump(tweet_json_limited, f)
                 f.write('\n')
