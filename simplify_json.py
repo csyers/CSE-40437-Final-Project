@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# simplifier.py - given a file of JSON tweets, it simplifies it to the reduced form size with tweet id, text, and timestamp
+# simplify_json.py - given a file of JSON tweets, it simplifies it to the reduced form size with tweet id, text, and timestamp
 # March 14, 2017
 
 
@@ -23,13 +23,15 @@ def main():
     # load all the tweets from each of the input files into a list
     tweets = [json.loads(line) for line in open(json_file)]
 
-    # get a list of the simplified format
-    tweets_simplified = [tweet['text'].replace('\n',' ') + "::" + str(tweet['id']) + "::" + tweet['created_at'] for tweet in tweets]
-
     # write each tweet to the file specified in the second argument
     with open(outfile, 'w+') as f:
-        for tweet_simplified in tweets_simplified:
-            f.write(tweet_simplified + '\n')
+        for tweet in tweets:
+            tweet_json_limited = {}
+            tweet_json_limited['text'] = tweet['text']
+            tweet_json_limited['id'] = tweet['id']
+            tweet_json_limited['created_at'] = tweet['created_at']
+            json.dump(tweet_json_limited, f)
+            f.write('\n')
 
 if __name__ == '__main__':
     main()

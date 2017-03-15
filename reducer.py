@@ -22,25 +22,27 @@ def main():
     outfile = sys.argv[3]
 
     # load all the tweets from each of the input files into a list
-    tweets1 = [line for line in open(path1)]
-    tweets2 = [line for line in open(path2)]
+    tweets1 = [json.loads(line) for line in open(path1)]
+    tweets2 = [json.loads(line) for line in open(path2)]
 
     # get a list of all ids from the first list of tweets
-    tweet1_ids = [int(line.split("::")[1]) for line in tweets1]
+    tweet1_ids = [line['id'] for line in tweets1]
 
     # get a list of all ids from the second list of tweets
-    tweet2_ids = [int(line.split("::")[1]) for line in tweets2]
+    tweet2_ids = [line['id'] for line in tweets2]
        
     # get a list of the ids common to both set of tweets
     common_ids = list(set(tweet1_ids).intersection(tweet2_ids))
 
     # get the dictionaries for each tweet
-    common_tweets = [tweet for tweet in tweets1 if int(tweet.split("::")[1]) in common_ids]
+    common_tweets = [tweet for tweet in tweets1 if tweet['id'] in common_ids]
 
     # write each common tweet to the file specified in the third argument
     with open(outfile, 'w+') as f:
         for common_tweet in common_tweets:
-            f.write(common_tweet)
-
+            json.dump(common_tweet, f)
+            f.write('\n')
+        
+        
 if __name__ == '__main__':
     main()
