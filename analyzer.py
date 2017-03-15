@@ -3,7 +3,7 @@
 # analyzer.py - does sentiment analysis on a file of json tweets
 # March 4, 2017
 
-
+import datetime
 import tweepy
 import json
 import sys
@@ -23,9 +23,25 @@ def initialize_sentiment_dict():
         sentiment_scores[line[0]] = line[1]
     return sentiment_scores
 
+def separate_tweets_by_day(tweets):
+    '''
+    separate_tweets_by_day: function that given a list of tweets, returns a dictionary that maps from dates to tweets on that day
+    used to get the rating score of a single day
+    '''
+    tweets_by_day = {}
+    for tweet in tweets:
+        date_object = proper_date = datetime.datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y').date()
+        if date_object in tweets_by_day:
+            tweets_by_day[date_object].append(tweet)
+        else:
+            tweets_by_day[date_object] = []
+            tweets_by_day[date_object].append(tweet)
+    return tweets_by_day
+
 def sentiment(tweet_file):
     scores = initialize_sentiment_dict()
     tweets = [json.loads(line) for line in open(tweet_file)]
+    tweets_by_day = separate_tweets_by_day(tweets)
     
     
 def opinion_and_sentiment(tweet_file):
