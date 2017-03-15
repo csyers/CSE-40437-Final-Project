@@ -18,3 +18,5 @@
 * `simplify_json.py`
   * Usage: `simplify_json.py path/to/tweet/file.json path/to/output/file.json`
   * Function: Changes tweet from full json (found in `path/to/tweet/file.json`) to reduced json, where only the text, id, and created_at field exist. Write a newfile named `path/to/output/file.json`.
+* `sentiment_analysis/`
+  * Directory that holds downloaded sentiment analysis tools to use in `analyze.py`.
