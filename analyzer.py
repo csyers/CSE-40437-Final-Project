@@ -9,8 +9,25 @@ import json
 import sys
 import os
 import getopt
+
+sentiment_analysis_file = "sentiment_analysis/AFINN/AFINN-111.txt"
+
+def initialize_sentiment_dict():
+    '''
+    initialize_sentiment_dict: function that creates a mapping from word to sentiment score
+    used to get the overall sentiment score of a given tweet
+    '''
+    sentiment_scores = {}
+    lines = [line.split() for line in open(sentiment_analysis_file)]
+    for line in lines:
+        sentiment_scores[line[0]] = line[1]
+    return sentiment_scores
+
 def sentiment(tweet_file):
-    print("sentiment")
+    scores = initialize_sentiment_dict()
+    tweets = [json.loads(line) for line in open(tweet_file)]
+    
+    
 def opinion_and_sentiment(tweet_file):
     print("opiniot")
 
