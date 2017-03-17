@@ -3,7 +3,7 @@
 
 
 ### File Contents
-* `scripts/'
+* `scripts/`
   * `analyzer.py`
     * Usage: `analyzer.py path/to/tweet/file.json path/to/output/file.csv`
     * Function: generates popularity scores for products for each day in the dataset provided. Writes out the dates and scores in a comma separated format to the filename provided to the script.
