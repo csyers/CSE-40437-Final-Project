@@ -16,9 +16,14 @@ def main():
         print("Usage: ./simplifier.py colon_separated_tweets.txt outfile.txt")
         exit(1)
     
+    
     # get the arguments into variables
     tweet_file = sys.argv[1]
     outfile = sys.argv[2]
+
+    print("=======================================================")
+    print("Starting simplification of " + tweet_file)
+    print("=======================================================")
 
     # load all the tweets from each of the input files into a single varaible 
     with open(tweet_file, 'r') as f:
@@ -38,7 +43,7 @@ def main():
                 # write normal tweets in the right format
                 tweet_json_limited = {}
                 tweet_json_limited['text'] = separated[0][1:]
-                tweet_json_limited['id'] = int(separated[1])
+                tweet_json_limited['id'] = int(separated[1].replace(':',''))
                 tweet_json_limited['created_at'] = separated[2] + '2017'
                 json.dump(tweet_json_limited, f)
                 f.write('\n')
