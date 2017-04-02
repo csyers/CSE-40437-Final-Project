@@ -10,9 +10,10 @@ import json
 import sys
 import os
 import getopt
+import frequent_words
 
 # file to compare words to
-sentiment_analysis_file = "sentiment_analysis/AFINN/AFINN-111.txt"
+sentiment_analysis_file = os.path.dirname(sys.path[0]) + os.sep + "sentiment_analysis/AFINN/AFINN-111.txt"
 
 # rating values: 0 - scale
 scale = 10
@@ -61,8 +62,11 @@ def separate_tweets_by_day(tweets):
             tweets_by_day[date_object] = []
             tweets_by_day[date_object].append(tweet)
     
+    count_by_day = {}
+    for date in tweets_by_day:
+        count_by_day[date] = len(tweets_by_day[date])
     # return the dictionary of date objects --> list of tweets
-    return tweets_by_day
+    return tweets_by_day, count_by_day
 
 def get_ratings(tweets_by_day, scores):
     '''
@@ -115,18 +119,25 @@ def get_score(tweet_text, scores):
     # return the score
     return score
 
-def write_csv(ratings_by_day, outfile):
+def write_csv(ratings_by_day, count_by_day, frequent_words_by_day, outfile):
     '''
     write_csv: function that takes in the dictionary of ratings on a given day and writes outfile to be csv format
     '''
     with open(outfile,"w+") as f:
         writer = csv.writer(f)
         # write the header line
-        writer.writerow(("date","rating"))
+        writer.writerow(("date","rating","count","frequent words"))
     
         # for every element in the dictionary, sorted, write the information out
         for date in sorted(ratings_by_day.keys()):
-            writer.writerow((date.strftime('%m/%d/%Y'),ratings_by_day[date]*scale))
+            writer.writerow((date.strftime('%m/%d/%Y'),ratings_by_day[date]*scale,count_by_day[date],frequent_words_by_day[date]))
+
+def get_frequent_words(tweets_by_day):
+    frequent_words_by_day = {}
+    for date in tweets_by_day:
+        frequent_words_by_day[date] = frequent_words.frequent_words(tweets_by_day[date])
+
+    return frequent_words_by_day
 
 def sentiment(tweet_file, outfile):
     '''
@@ -137,16 +148,18 @@ def sentiment(tweet_file, outfile):
     # load the tweets from the json file
     tweets = [json.loads(line) for line in open(tweet_file)]
     # get a mapping of dates --> list of tweets on that date
-    tweets_by_day = separate_tweets_by_day(tweets)
+    tweets_by_day, count_by_day = separate_tweets_by_day(tweets)
+    # get the ten most frequent words on each day for the tweets
+    frequent_words_by_day = get_frequent_words(tweets_by_day)
     # get a mapping of dates --> rating of tweets on that date
     ratings_by_day = get_ratings(tweets_by_day, scores)
     # write the information to a csv file
-    write_csv(ratings_by_day, outfile)
+    write_csv(ratings_by_day, count_by_day, frequent_words_by_day, outfile)
 
 def main():
     # check the number of arguments and exit if the wrong number was supplied
     if len(sys.argv) != 3:
-        print("Usage: ./analyzer.py path/to/tweet/file.json path/to/output/file.csv")
+        print("Usage: analyzer.py path/to/tweet/file.json path/to/output/file.csv")
         exit(1)
 
     # get the arguments into variables
