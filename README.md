@@ -19,6 +19,9 @@
   * `simplify_json.py`
     * Usage: `simplify_json.py path/to/tweet/file.json path/to/output/file.json next_field`
     * Function: Changes tweet from full json (found in `path/to/tweet/file.json`) to reduced json, where only the text, id, and created_at field exist. Write a newfile named `path/to/output/file.json`. `next_field` argument is the dictionary entry of the entry that follows the text field.
+  * `frequent_words.py`
+    * Usage: `frequent_words.py path/to/tweet/file.json`
+    * Function: Prints out the ten most frequent adjectives in the input file.
 * `data/`
   * Directory to hold the tweets datasets gathered from `crawler.py` and produced by `reducer.py`.
 * `results/`
