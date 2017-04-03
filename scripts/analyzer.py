@@ -133,10 +133,16 @@ def write_csv(ratings_by_day, count_by_day, frequent_words_by_day, outfile):
             writer.writerow((date.strftime('%m/%d/%Y'),ratings_by_day[date]*scale,count_by_day[date],frequent_words_by_day[date]))
 
 def get_frequent_words(tweets_by_day):
+    '''
+    get_frequent_words: function that takes in a dictionary of tweets on a day and envokes 
+    frequent_words.frequent_words to get the ten most used adjevtives in the corpus. Returns a
+    dictionary that maps from date --> list of most frequent words
+    '''
     frequent_words_by_day = {}
     for date in tweets_by_day:
         frequent_words_by_day[date] = frequent_words.frequent_words(tweets_by_day[date])
 
+    # return the dictionary
     return frequent_words_by_day
 
 def sentiment(tweet_file, outfile):
