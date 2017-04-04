@@ -52,8 +52,8 @@ def most_frequent_n_adjectives(tweets, n):
 
 def main():
     # check the number of arguments and exit if the wrong number was supplied
-    if len(sys.argv) != 3:
-        print("Usage: frequent_words.py path/to/tweet/file.json num_adjectives")
+    if len(sys.argv) != 2:
+        print("Usage: frequent_words.py path/to/tweet/file.json")
         exit(1)
 
     # get the arguments into variables
