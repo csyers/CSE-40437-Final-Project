@@ -15,8 +15,20 @@ import frequent_words
 # file to compare words to
 sentiment_analysis_file = os.path.dirname(sys.path[0]) + os.sep + "sentiment_analysis/AFINN/AFINN-111.txt"
 
+# number of adjectives to track
+num_adjectives = 3
+
 # rating values: 0 - scale
 scale = 10
+
+def clean_text(tweets):
+    whitelist = set('abcdefghijklmnopqrstuvwxy \'1234567890')
+    clean_tweets = []
+    for tweet in tweets:
+        cleaned = ''.join(filter(whitelist.__contains__, tweet['text'].lower()))
+        tweet['text'] = cleaned
+        clean_tweets.append(tweet)
+    return clean_tweets
 
 def initialize_sentiment_dict():
     '''
@@ -140,7 +152,7 @@ def get_frequent_words(tweets_by_day):
     '''
     frequent_words_by_day = {}
     for date in tweets_by_day:
-        frequent_words_by_day[date] = frequent_words.frequent_words(tweets_by_day[date])
+        frequent_words_by_day[date] = frequent_words.most_frequent_n_adjectives(tweets_by_day[date],num_adjectives)
 
     # return the dictionary
     return frequent_words_by_day
@@ -153,6 +165,8 @@ def sentiment(tweet_file, outfile):
     scores = initialize_sentiment_dict()
     # load the tweets from the json file
     tweets = [json.loads(line) for line in open(tweet_file)]
+    # clean the tweet text to make lowercase, remove punctuation
+    tweets = clean_text(tweets)
     # get a mapping of dates --> list of tweets on that date
     tweets_by_day, count_by_day = separate_tweets_by_day(tweets)
     # get the ten most frequent words on each day for the tweets
