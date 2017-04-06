@@ -8,9 +8,12 @@ import datetime
 import tweepy
 import json
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8') #allows for emoji support
 import os
 import getopt
 import frequent_words
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # file to compare words to
 sentiment_analysis_file = os.path.dirname(sys.path[0]) + os.sep + "sentiment_analysis/AFINN/AFINN-111.txt"
@@ -20,6 +23,15 @@ num_adjectives = 3
 
 # rating values: 0 - scale
 scale = 10
+
+def analyzeSentimentVader(tweet_file):
+    sentiment_score = {}
+    tweets = [json.loads(line) for line in open(tweet_file)]
+    analyzer = SentimentIntensityAnalyzer()
+    for tweet in tweets:
+        vs = analyzer.polarity_scores(tweet["text"])
+        sentiment_score[tweet["text"]] = vs["compound"] #this gives the compound feeling score on a scale of -1 to +1
+    return sentiment_score
 
 def clean_text(tweets):
     whitelist = set('abcdefghijklmnopqrstuvwxy \'1234567890')
@@ -94,25 +106,36 @@ def get_ratings(tweets_by_day, scores):
 
 def get_average_rating(list_of_tweets, scores):
     '''
-    get_average_rating: function that gets the average rating of a list of tweets by counting the positive,
-    neagtive, and neutral tweets in the list
+    get_average_rating: function that gets the average rating of a day's tweets by adding up the compound scores for each tweet and diving by the number of tweets from that day
     '''
-    positive = 0
-    negative = 0
-    neutral = 0
-
-    # for each tweet, get the score and increment the proper counter
+    score = 0
+    numTweets = 0
     for tweet in list_of_tweets:
-        score = get_score(tweet['text'], scores)
-        if score > 0:
-            positive += 1
-        elif score < 0:
-            negative += 1
-        else:
-            neutral += 1
+        numTweets += 1
+        score += scores[tweet["text"]]
 
-    # return the percentage of tweets that is positive
-    return float(positive)/len(list_of_tweets)
+    return float(score)/numTweets
+
+    '''
+    get_average_rating: function that gets the average rating of a list of tweets by counting the positive,
+    negative, and neutral tweets in the list
+    '''
+    # positive = 0
+    # negative = 0
+    # neutral = 0
+
+    # # for each tweet, get the score and increment the proper counter
+    # for tweet in list_of_tweets:
+    #     score = get_score(tweet['text'], scores)
+    #     if score > 0:
+    #         positive += 1
+    #     elif score < 0:
+    #         negative += 1
+    #     else:
+    #         neutral += 1
+
+    # # return the percentage of tweets that is positive
+    # return float(positive)/len(list_of_tweets)
 
 def get_score(tweet_text, scores):
     '''
@@ -162,17 +185,18 @@ def sentiment(tweet_file, outfile):
     sentiment: function that computes the daily rating of a set of tweets and writes them to the outfile
     '''
     # get the dictionary of sentiment scores
-    scores = initialize_sentiment_dict()
+    #scores = initialize_sentiment_dict()
+    scores = analyzeSentimentVader(tweet_file)
     # load the tweets from the json file
     tweets = [json.loads(line) for line in open(tweet_file)]
-    # clean the tweet text to make lowercase, remove punctuation
-    tweets = clean_text(tweets)
     # get a mapping of dates --> list of tweets on that date
     tweets_by_day, count_by_day = separate_tweets_by_day(tweets)
-    # get the ten most frequent words on each day for the tweets
-    frequent_words_by_day = get_frequent_words(tweets_by_day)
     # get a mapping of dates --> rating of tweets on that date
     ratings_by_day = get_ratings(tweets_by_day, scores)
+    # clean the tweet text to make lowercase, remove punctuation
+    tweets = clean_text(tweets)
+    # get the ten most frequent words on each day for the tweets
+    frequent_words_by_day = get_frequent_words(tweets_by_day)
     # write the information to a csv file
     write_csv(ratings_by_day, count_by_day, frequent_words_by_day, outfile)
 
