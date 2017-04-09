@@ -22,6 +22,9 @@
   * `frequent_words.py`
     * Usage: `frequent_words.py path/to/tweet/file.json`
     * Function: Prints out the ten most frequent adjectives in the input file.
+  * `smoother.py`
+    * Usage: `smoother.py ratings.csv k output.csv`
+    * Function: Takes the rating information from ratings.csv and outputs a similar file with new ratings computed by the k day moving average smoothing function in output.csv.
 * `data/`
   * Directory to hold the tweets datasets gathered from `crawler.py` and produced by `reducer.py`.
 * `results/`
