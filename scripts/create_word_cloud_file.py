@@ -1,25 +1,21 @@
 #!/usr/bin/env python
 
-# create_word_cloud.py - given a ratings file, creates a word cloud with the most frequent adjectives found in a tweet corpus
+# create_word_cloud.py - given a ratings file, creates a file for wordcloud to create an image out of, called temp.txt
 # April 19, 2017
 
 import json
 import csv
 import sys
-import os
-import re
-import subprocess
 
 def main():
 
     # check the number of arguments and exit if the wrong number was supplied
-    if len(sys.argv) != 3:
-        print("Usage: ./creat_word_cloud.py ratings.csv outfile.png")
+    if len(sys.argv) != 2:
+        print("Usage: ./creat_word_cloud.py ratings.csv")
         exit(1)
     
     # get the arguments into variables
     ratings_csv = sys.argv[1]
-    outfile_png = sys.argv[2]
 
     # hold the ratings and lines in the following lists
     adjectives = []
@@ -35,12 +31,13 @@ def main():
             json_string = json_string.replace("u\"","\"")
             d = json.loads(json_string)
             adjectives.append(d)
-
+    count = 0
     with open("temp.txt","w") as f:
         for adjective in adjectives:
             for word in adjective:
                 for i in range(adjective[word]):
-                    f.write(word + '\n')
+                    f.write(word + ' ' + str(count) + ' \n')
+                    count += 1
 
 if __name__ == '__main__':
     main()

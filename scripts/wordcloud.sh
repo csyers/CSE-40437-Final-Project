@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-./create_word_cloud.py $1 $2
+# get the file temp.txt to make the cloud out if
+./create_word_cloud_file.py $1
 
-eval 'python2 ./wordcloud_cli.py --imagefile $2 --text temp.txt --background "rgb(255,255,255)"'
+# execute the worldcloud_cli tool to create the file supplied in second argument
+eval 'python2 ./wordcloud_cli.py --imagefile $2 --text temp.txt --background "rgb(255,255,255)" --no_collocations'
 
-#rm temp.txt
+# remove the temporary file
+rm temp.txt
