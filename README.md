@@ -38,6 +38,15 @@ The following python packages might be required to run some of the scripts.
   * `get_old_tweets.py`
     * Usage: `get_old_tweets.py keyword since_date until_date outfile.json`
     * Function: Gets 10000 tweets with the given keyword which were created at the two given times. Writes the resulting tweet id, created_at time, and tweet text to the file outfile.json.
+  * `create_word_cloud_file.py`
+    * Usage: `create_word_cloud_file.py ratings.csv`
+    * Function: Creates a file named temp.txt which has each of the adjectives in the ratings printed a proportional number of times.
+  * `wordcloud.sh`
+    * Usage: `wordcloud.sh ratings.csv outimage.png`
+    * Function: Creates a wordcloud image named outimage.png based on the adjectives found in ratings.csv.
+  * `wordcloud_cli.py`
+    * Usage: `wordcloud_cli.py --help`
+    * Function: Creates wordcloud images. Taken from https://github.com/amueller/word_cloud.
 * `data/`
   * Directory to hold the tweets datasets gathered from `crawler.py` and produced by `reducer.py`.
 * `results/`
