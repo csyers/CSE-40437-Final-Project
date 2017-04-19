@@ -10,6 +10,7 @@ The following python packages might be required to run some of the scripts.
 * pyquery
 * nltk
 * matplotlib
+* wordcloud
 
 ### File Contents
 * `scripts/`
