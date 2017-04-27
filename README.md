@@ -47,6 +47,9 @@ The following python packages might be required to run some of the scripts.
   * `wordcloud_cli.py`
     * Usage: `wordcloud_cli.py --help`
     * Function: Creates wordcloud images. Taken from https://github.com/amueller/word_cloud.
+  * `find_bad_lines.py`
+    * Usage: `find_bad_lines.py tweets.json`
+    * Function: Prints out all of the lines that are not valid JSON, with the intention of deleting those lines.
 * `data/`
   * Directory to hold the tweets datasets gathered from `crawler.py` and produced by `reducer.py`.
 * `results/`
