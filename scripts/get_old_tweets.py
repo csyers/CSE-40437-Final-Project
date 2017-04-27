@@ -7,8 +7,7 @@ import os
 import sys
 import got3
 import json
-
-MaxTweets = 10000
+from datetime import timedelta, date, datetime
 
 def main():
     
@@ -24,7 +23,7 @@ def main():
     outfile = sys.argv[4]
 
     # get the list of tweets that follow the criteria
-    tweetCriteria = got3.manager.TweetCriteria().setQuerySearch(keyword).setSince(since_date).setUntil(until_date).setMaxTweets(MaxTweets)
+    tweetCriteria = got3.manager.TweetCriteria().setQuerySearch(keyword).setSince(since_date).setUntil(until_date)
     tweets = got3.manager.TweetManager.getTweets(tweetCriteria)
 
     # write the tweets to a file in the proper format
@@ -33,6 +32,7 @@ def main():
             tweet_json_limited = {}
             tweet_json_limited['text'] = tweet.text
             tweet_json_limited['id'] = int(tweet.id)
+            tweet_json_limited['retweets'] = int(tweet.retweets)
             date_string = tweet.date.strftime("%a %b %d %X +0000 %Y")
             tweet_json_limited['created_at'] = date_string
             json.dump(tweet_json_limited, f)
