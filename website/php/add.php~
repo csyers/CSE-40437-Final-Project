@@ -1,0 +1,7 @@
+<?php
+
+$new_term = $_GET["new_term"];
+
+echo $new_term;
+
+?>
