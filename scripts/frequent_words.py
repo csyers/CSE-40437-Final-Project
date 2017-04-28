@@ -13,6 +13,7 @@ import operator
 import nltk
 import analyzer
 
+
 def most_frequent_n_adjectives(tweets, n):
     '''
     most_frequent_n_adjectives: returns a list of the n most used adjectives in the tweets and their counts
@@ -21,6 +22,7 @@ def most_frequent_n_adjectives(tweets, n):
     adjective_frequencies = {}
     top_frequencies = {}
     count = 0
+    
 
     # tags used by nltk to mark adjectives
     adj_tags = ["JJ","JJR","JJS"]

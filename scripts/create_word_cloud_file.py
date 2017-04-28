@@ -6,6 +6,9 @@
 import json
 import csv
 import sys
+import os
+
+english_words_file = os.path.dirname(sys.path[0]) + os.sep + "sentiment_analysis/wordsEn.txt"
 
 def main():
 
@@ -14,6 +17,8 @@ def main():
         print("Usage: ./creat_word_cloud.py ratings.csv")
         exit(1)
     
+    english_words = [line.strip() for line in open(english_words_file)]
+
     # get the arguments into variables
     ratings_csv = sys.argv[1]
 
@@ -27,7 +32,7 @@ def main():
         header = next(reader);
         # get the ratings and the rest of the row
         for row in reader:
-            json_string = row[3].replace("'","\"")
+            json_string = row[4].replace("'","\"")
             json_string = json_string.replace("u\"","\"")
             d = json.loads(json_string)
             adjectives.append(d)
@@ -35,9 +40,10 @@ def main():
     with open("temp.txt","w") as f:
         for adjective in adjectives:
             for word in adjective:
-                for i in range(adjective[word]):
-                    f.write(word + ' ' + str(count) + ' \n')
-                    count += 1
+                if word in english_words:
+                    for i in range(adjective[word]):
+                        f.write(word + ' ' + str(count) + ' \n')
+                        count += 1
 
 if __name__ == '__main__':
     main()
