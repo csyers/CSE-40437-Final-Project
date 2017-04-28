@@ -1,8 +1,0 @@
-date,rating,count,frequent words
-03/01/2017,0.29217857142857145,28,"{u'new': 3, u'pro': 3, u'microsoft': 15}"
-03/02/2017,1.0906739130434782,46,"{u'ud83dude0a': 4, u'youtube': 23, u'microsoft': 41}"
-03/03/2017,0.5667500000000001,24,"{u'huge': 3, u'microsoft': 16, u'new': 3}"
-03/04/2017,1.953666666666666,36,"{u'new': 8, u'microsoft': 29, u'wordu2019s': 5}"
-03/05/2017,1.5938846153846153,26,"{u'new': 4, u'officennkalau': 3, u'microsoft': 21}"
-03/06/2017,4.972529217719213,2122,"{u'double': 1522, u'potential': 1522, u'microsoft': 416}"
-03/07/2017,0.7769949468774306,7718,"{u'new': 725, u'microsoft': 4874, u'free': 256}"
