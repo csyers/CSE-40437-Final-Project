@@ -5,7 +5,6 @@
 
 import csv
 import datetime
-import tweepy
 import json
 import sys
 reload(sys)
@@ -16,13 +15,13 @@ import frequent_words
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 # file to compare words to
-#sentiment_analysis_file = os.path.dirname(sys.path[0]) + os.sep + "sentiment_analysis/AFINN/AFINN-111.txt"
+sentiment_analysis_file = os.path.dirname(sys.path[0]) + os.sep + "sentiment_analysis/AFINN/AFINN-111.txt"
 
 # number of adjectives to track
-num_adjectives = 3
+num_adjectives = 10
 
 # rating values: 0 - 5
-scale = 10
+scale = 5
 
 def vader_sentiment_analysis(tweets):
 	'''
@@ -45,30 +44,29 @@ def clean_text(tweets):
         clean_tweets.append(tweet)
     return clean_tweets
 
-# def initialize_sentiment_dict():
-#     '''
-#     initialize_sentiment_dict: function that creates a mapping from word to sentiment score
-#     used to get the overall sentiment score of a given tweet
-#     '''
-#     sentiment_scores = {}
-#     # get a list of all the words in each line of the sentiment analysis file
-#     lines = [line.split() for line in open(sentiment_analysis_file)]
-
-#     # for every line
-#     for line in lines:
-#         # case: single word
-#         if len(line) == 2:
-#             sentiment_scores[line[0]] = int(line[1])
-#         # case: more than one word phrase
-#         else:
-#             # reconstruct the phrase
-#             phrase = line[0]
-#             for i in range(len(line)-2):
-#                 phrase += " " + line[i+1]
-#             sentiment_scores[phrase] = int(line[len(line)-1])
-    
-#     # return the dictionary of words/phrases --> sentiment score
-#     return sentiment_scores
+def initialize_sentiment_dict():
+    '''
+    initialize_sentiment_dict: function that creates a mapping from word to sentiment score
+    used to get the overall sentiment score of a given tweet
+    '''
+    sentiment_scores = {}
+    # get a list of all the words in each line of the sentiment analysis file
+    lines = [line.split() for line in open(sentiment_analysis_file)]
+    # for every line
+    for line in lines:
+        # case: single word
+        if len(line) == 2:
+            sentiment_scores[line[0]] = int(line[1])
+        # case: more than one word phrase
+        else:
+            # reconstruct the phrase
+            phrase = line[0]
+            for i in range(len(line)-2):
+                phrase += " " + line[i+1]
+            sentiment_scores[phrase] = int(line[len(line)-1])
+  
+    # return the dictionary of words/phrases --> sentiment score
+    return sentiment_scores
 
 def separate_tweets_by_day(tweets):
     '''
@@ -95,20 +93,19 @@ def separate_tweets_by_day(tweets):
     # return the dictionary of date objects --> list of tweets
     return tweets_by_day, count_by_day
 
-def get_ratings(tweets_by_day, scores):
+def get_sentiment(tweets_by_day, scores):
     '''
     get_ratings: function that gets the average product rating of the a set of tweets associated with a
     date. Returns a map from date --> rating from -1 to 1
     '''
-    ratings_by_day = {}
+    sentiment_by_day = {}
     # for every key in the dictionary
     for date in tweets_by_day:
         # populate the dictionary with the average rating
-        ratings_by_day[date] = get_average_rating(tweets_by_day[date], scores)
-    print(ratings_by_day)
-    return ratings_by_day
+        sentiment_by_day[date] = get_average_sentiment(tweets_by_day[date], scores)
+    return sentiment_by_day
 
-def get_average_rating(list_of_tweets, scores):
+def get_average_sentiment(list_of_tweets, scores):
     '''
     get_average_rating: function that gets the average rating of a day's tweets by adding up the compound scores for each tweet and diving by the number of tweets from that day
     '''
@@ -118,6 +115,40 @@ def get_average_rating(list_of_tweets, scores):
         numTweets += 1
         score += scores[tweet["text"]]
     return (float(score)/numTweets)
+
+def get_ratings(tweets_by_day, scores):
+    '''
+    get_ratings: function that gets the average product rating of the a set of tweets associated with a
+    date. Returns a map from date --> rating from 0 to 1
+    '''
+    ratings_by_day = {}
+    # for every key in the dictionary
+    for date in tweets_by_day:
+        # populate the dictionary with the average rating
+        ratings_by_day[date] = get_average_rating(tweets_by_day[date], scores)
+    return ratings_by_day
+
+def get_average_rating(list_of_tweets, scores):
+    '''
+    get_average_rating: function that gets the average rating of a list of tweets by counting the positive,
+    neagtive, and neutral tweets in the list
+    '''
+    positive = 0
+    negative = 0
+    neutral = 0
+
+    # for each tweet, get the score and increment the proper counter
+    for tweet in list_of_tweets:
+        score = get_score(tweet['text'], scores)
+        if score > 0:
+            positive += 1
+        elif score < 0:
+            negative += 1
+        else:
+            neutral += 1
+
+    # return the percentage of tweets that is positive
+    return float(positive)/len(list_of_tweets)
 
 def get_score(tweet_text, scores):
     '''
@@ -136,18 +167,18 @@ def get_score(tweet_text, scores):
     # return the score
     return score
 
-def write_csv(ratings_by_day, count_by_day, frequent_words_by_day, outfile):
+def write_csv(sentiment_by_day, ratings_by_day, count_by_day, frequent_words_by_day, outfile):
     '''
     write_csv: function that takes in the dictionary of ratings on a given day and writes outfile to be csv format
     '''
     with open(outfile,"w+") as f:
         writer = csv.writer(f)
         # write the header line
-        writer.writerow(("date","rating","count","frequent words"))
+        writer.writerow(("date","sentiment","rating","count","frequent words"))
     
         # for every element in the dictionary, sorted, write the information out
         for date in sorted(ratings_by_day.keys()):
-            writer.writerow((date.strftime('%m/%d/%Y'),(ratings_by_day[date]+1*float(5/2)),count_by_day[date],frequent_words_by_day[date]))
+            writer.writerow((date.strftime('%m/%d/%Y'),(sentiment_by_day[date]+1*float(5/2)),ratings_by_day[date]*scale,count_by_day[date],frequent_words_by_day[date]))
 
 def get_frequent_words(tweets_by_day):
     '''
@@ -168,18 +199,24 @@ def sentiment(tweet_file, outfile):
     '''
     # get the dictionary of sentiment scores
     # load the tweets from the json file
+    
+    # get the dictionary of sentiment scores
+    afinn_scores = initialize_sentiment_dict()
+
     tweets = [json.loads(line) for line in open(tweet_file)]
     scores = vader_sentiment_analysis(tweets)
     # get a mapping of dates --> list of tweets on that date
     tweets_by_day, count_by_day = separate_tweets_by_day(tweets)
     # get a mapping of dates --> rating of tweets on that date
-    ratings_by_day = get_ratings(tweets_by_day, scores)
+    sentiment_by_day = get_sentiment(tweets_by_day, scores)
+    # get a mapping of dates --> rating of tweets on that date
+    ratings_by_day = get_ratings(tweets_by_day, afinn_scores)
     # clean the tweet text to make lowercase, remove punctuation
     tweets = clean_text(tweets)
     # get the ten most frequent words on each day for the tweets
     frequent_words_by_day = get_frequent_words(tweets_by_day)
     # write the information to a csv file
-    write_csv(ratings_by_day, count_by_day, frequent_words_by_day, outfile)
+    write_csv(sentiment_by_day, ratings_by_day, count_by_day, frequent_words_by_day, outfile)
 
 def main():
     # check the number of arguments and exit if the wrong number was supplied

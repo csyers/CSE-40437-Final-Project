@@ -5,7 +5,6 @@
 
 import csv
 import datetime
-import tweepy
 import json
 import sys
 import os
