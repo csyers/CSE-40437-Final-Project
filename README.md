@@ -56,3 +56,7 @@ The following python packages might be required to run some of the scripts.
   * Directory to hold the csv files generated from `analyzer.py`.
 * `sentiment_analysis/`
   * Directory that holds downloaded sentiment analysis tools to use in `analyze.py`.
+* `images/`
+  * Folder that holds word cloud images.
+* `website/`
+  * Contains website files and scripts.
