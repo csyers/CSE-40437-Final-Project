@@ -15,7 +15,7 @@ function changeGraph() {
 				data: {
 						product: product
 				}
-		}).done(function(data, status){
+		}]).done(function(data, status){
 				console.log(output)
 		}).fail(function(err){
 				console.log(err);
