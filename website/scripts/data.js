@@ -7,7 +7,7 @@ $("#view").on("submit", function(event){
 				changeGraph();
 		}
 });
-
+ 
 function changeGraph() {
 		var product = $("#product").val();
 		console.log(product)
@@ -18,12 +18,55 @@ function changeGraph() {
 				}
 		}).done(function(output, status){
 				var obj = JSON.parse(output);
-				console.log(obj);
+				console.log(obj[0]);
+				console.log(obj[1]);
+				dates = obj[1].split(" ");
+				results = obj[0].split(" ");
+				data = []
+				for(i=0; i< dates.length; i++){
+						data.push({date: dates[i], result: Number(results[i])})
+				}
+				console.log(data[0]);
+				graph.setData(data);
+				$("#title").text(product.split(".")[0])
+				
 		}).fail(function(err){
 				console.log("Hi");
 				console.log(err);
 		});
 }
+var graph;
+	  var product = $("#product").val();
+		console.log(product)
+		$.get({
+				url: "../php/data.php",
+				data: {
+						product: product
+				}
+		}).done(function(output, status){
+				var obj = JSON.parse(output);
+				console.log(obj[0]);
+				console.log(obj[1]);
+				dates = obj[1].split(" ");
+				results = obj[0].split(" ");
+				data = []
+				for(i=0; i< dates.length; i++){
+						data.push({date: dates[i], result: Number(results[i])})
+				}
+				console.log(data[0]);
+						graph = new Morris.Line({
+							element: 'graph',
+							data: data,
+							xkey: 'date',
+							ykeys: ['result'],
+							labels:['Sentiment Levels']
+						});
+				$("#title").text(product.split(".")[0])
+				
+		}).fail(function(err){
+				console.log("Hi");
+				console.log(err); 
+		});
 
 
 
@@ -31,7 +74,7 @@ function changeGraph() {
 
 
 
-
+/*
 new Morris.Line({
   // ID of the element in which to draw the chart.
   element: 'graph',
@@ -52,3 +95,4 @@ new Morris.Line({
   // chart.
   labels: ['Value']
 });
+*/

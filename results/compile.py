@@ -18,7 +18,8 @@ for rating in return_json["ratings"]:
     print rating,
 print
 for date in return_json["dates"]:
-    print date,
+    date_parts = date.split("/")
+    print date_parts[2] + "-" + date_parts[0] + "-" + date_parts[1],
 print
 for sentiment in return_json["sentiment"]:
     print sentiment,
