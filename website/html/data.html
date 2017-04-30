@@ -9,6 +9,20 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="../css/theme.css">
 		<link rel="stylesheet" type="text/css" href="../css/theme.css">
+
+
+		<!-- JS -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js" integrity="sha256-IxYUmOOk74FUrcx5FEMOHVmTJDb7ZAwnC/ivo/OQGxg=" crossorigin="anonymous"></script>
+
+		
+    <!-- Grabph -->
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+		
 		<title> CSE40437 - Product Tracker and Prediction </title>
 	</head>
 
@@ -45,37 +59,44 @@
 <section id="cover">
     <div class="container-fluid">
         <div class="jumbotron text-center">
-            <h1>Coming Soon!</h1>
-            <h2>Our site is currently under construction!  Enjoy these pictures of our faces until everything is up and running again!</h2>
-            <p></p>
+            <h1>Collected Data</h1>
+            <h2>Here are all of our already collected and analyzed data sets</h2>
         </div>
     </div>
 </section>
 <!-- ======= Jumbotron ====== -->
 
-<!-- ======= Team ====== -->
-<section id="team" class="dark">
-	<div class="container text-center">
-		<h1>The Hype Train Team</h1>
-		<br />
-		<div class="col-sm-4 ">
-			<img src="../images/Syers.jpg" class="img-responsive img-circle" >
-			<h2>Chris Syers</h2>
-			<p>Senior</p>
-		</div>
-		<div class="col-sm-4 ">
-			<img src="../images/Allie.jpg" class="img-responsive img-circle" >
-			<h2>Allie Olshefke</h2>
-			<p>Junior</p>
-		</div>
-		<div class="col-sm-4 ">
-			<img src="../images/Scary.jpg" class="img-responsive img-circle" >
-			<h2>Chris Scaramella</h2>
-			<p>Junior</p>
-		</div>
-	</div>
-</section>	
-<!-- ======= Team ====== -->
+<!-- ======= Form ======== -->
+<section id="form">
+	<div class="container text-left">
+		<form role="form" id="view">
+			<div class="form-group">
+				<label>Select a data set to view:  </label>
+			</div>
+			<div class="form-group">
+				<select id="product">
+					<option value="NS">Nintendo Switch</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-default">View</button>
+			</div>
+</form>
+</div>
+</section>
+
+<!-- ======= Form ======== -->
+
+
+<!-- ======= Grabph ====== -->
+<section>
+<!--<div class="col-xs-1"></div>-->
+<div class="container-fluid text-left">
+<h2>Something</h2></div>
+<div id="graph"></div>
+</section>
+<!-- ======= Grabph ====== -->
+
 
 <!-- jQuery library -->
 <script src="http://code.jquery.com/jquery-3.1.1.min.js"
@@ -85,4 +106,5 @@
 
 </body>
 
+<script src="../scripts/data.js"></script>
 </html>
