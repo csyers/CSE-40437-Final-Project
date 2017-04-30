@@ -23,12 +23,14 @@ num_adjectives = 10
 # rating values: 0 - 5
 scale = 5
 
+# does the json file have retweets?
+retweets = False
+
 def vader_sentiment_analysis(tweets):
 	'''
 	vader_sentiment_analysis: analyze the sentiment of a tweet using the Vader sentiment analysis tool
 	'''
 	sentiment_score = {}
-	#tweets = [json.loads(line.replace("\'", '"')) for line in open(tweet_file)]
 	analyzer = SentimentIntensityAnalyzer()
 	for tweet in tweets:
 		vs = analyzer.polarity_scores(tweet["text"])
@@ -112,8 +114,12 @@ def get_average_sentiment(list_of_tweets, scores):
     score = 0
     numTweets = 0
     for tweet in list_of_tweets:
-        numTweets += 1
-        score += scores[tweet["text"]]
+        if retweets:
+            numTweets += int(tweet["retweets"]) + 1
+            score += scores[tweet["text"]] + int(tweet["retweets"]) * scores[tweet["text"]]
+        else:
+            numTweets += 1
+            score += scores[tweet["text"]]
     return (float(score)/numTweets)
 
 def get_ratings(tweets_by_day, scores):
@@ -136,19 +142,34 @@ def get_average_rating(list_of_tweets, scores):
     positive = 0
     negative = 0
     neutral = 0
-
+    numTweets = 0
     # for each tweet, get the score and increment the proper counter
-    for tweet in list_of_tweets:
-        score = get_score(tweet['text'], scores)
-        if score > 0:
-            positive += 1
-        elif score < 0:
-            negative += 1
-        else:
-            neutral += 1
+    if retweets:
+        for tweet in list_of_tweets:
+            rts = int(tweet['retweets'])
+            numTweets += rts + 1
+            score = get_score(tweet['text'], scores)
+            if score > 0:
+                positive += rts + 1
+            elif score < 0:
+                negative += rts + 1
+            else:
+                neutral += rts + 1
+
+    else: 
+        for tweet in list_of_tweets:
+            numTweets += 1
+            score = get_score(tweet['text'], scores)
+            if score > 0:
+                positive += 1
+            elif score < 0:
+                negative += 1
+            else:
+                neutral += 1
+
 
     # return the percentage of tweets that is positive
-    return float(positive)/len(list_of_tweets)
+    return float(positive)/numTweets
 
 def get_score(tweet_text, scores):
     '''
@@ -202,8 +223,14 @@ def sentiment(tweet_file, outfile):
     
     # get the dictionary of sentiment scores
     afinn_scores = initialize_sentiment_dict()
-
+    global retweets
     tweets = [json.loads(line) for line in open(tweet_file)]
+    try:
+        rts = tweets[0]['retweets']
+        retweets = True
+    except KeyError:
+        retweets = False
+
     scores = vader_sentiment_analysis(tweets)
     # get a mapping of dates --> list of tweets on that date
     tweets_by_day, count_by_day = separate_tweets_by_day(tweets)

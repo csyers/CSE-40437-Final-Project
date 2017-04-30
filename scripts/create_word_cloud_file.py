@@ -10,6 +10,13 @@ import os
 
 english_words_file = os.path.dirname(sys.path[0]) + os.sep + "sentiment_analysis/wordsEn.txt"
 
+def is_valid(json_string):
+    try:
+        json.loads(json_string)
+    except ValueError:
+        return False
+    return True
+
 def main():
 
     # check the number of arguments and exit if the wrong number was supplied
@@ -34,8 +41,9 @@ def main():
         for row in reader:
             json_string = row[4].replace("'","\"")
             json_string = json_string.replace("u\"","\"")
-            d = json.loads(json_string)
-            adjectives.append(d)
+            if is_valid(json_string):
+                d = json.loads(json_string)
+                adjectives.append(d)
     count = 0
     with open("temp.txt","w") as f:
         for adjective in adjectives:
