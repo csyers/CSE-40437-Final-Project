@@ -1,9 +1,9 @@
 <?php
 
-$file = $_GET["product"].'.csv';
+$file = $_GET["product"];
 
 exec('python ../../results/compile.py '.$file, $output, $return_val);
 
-echo $output;
+echo $return_val;
 
 ?>
