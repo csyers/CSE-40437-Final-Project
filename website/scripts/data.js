@@ -29,7 +29,15 @@ function changeGraph() {
 				}
 				graph.setData(data);
 				graph2.setData(data2);
-				$("#title").text(product.split(".")[0]);
+				                var title = product.split(".")[0].split("_")
+                for (i = 0; i < title.length; i++) {
+										title[i] = title[i].charAt(0).toUpperCase() + title[i].substring(1);
+                }
+				var fixed_title = title.join(" ");
+				$("#title").text(fixed_title);
+				var image = "../../images/" + product.split(".")[0] + ".png"
+				$("#word_cloud").attr("src",image); 
+
 				
 		}).fail(function(err){
 				console.log(err);
@@ -76,13 +84,13 @@ var graph2;
 						});
                 
                 var title = product.split(".")[0].split("_")
-                var fixed_title = ""
-                for (i = 0; i < length(title); i++) {
-                    var first_letter = ttitle[i].charAt(0)
-                    first_letter = first_letter.concat()
-                    fixed_title = first_letter.toUpperCase().concat(title[i][1:].concat(" ")) 
+                for (i = 0; i < title.length; i++) {
+										title[i] = title[i].charAt(0).toUpperCase() + title[i].substring(1);
                 }
+				var fixed_title = title.join(" ");
 				$("#title").text(fixed_title)
+				var image = "../../images/" + product.split(".")[0] + ".png"
+				$("#word_cloud").attr("src",image);
 				
 		}).fail(function(err){
 				console.log("Hi");
