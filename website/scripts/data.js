@@ -18,24 +18,25 @@ function changeGraph() {
 				}
 		}).done(function(output, status){
 				var obj = JSON.parse(output);
-				console.log(obj[0]);
-				console.log(obj[1]);
 				dates = obj[1].split(" ");
 				results = obj[0].split(" ");
+				results2 = obj[2].split(" ");
 				data = []
+				data2 = []
 				for(i=0; i< dates.length; i++){
-						data.push({date: dates[i], result: Number(results[i])})
+						data.push({date: dates[i], result: Number(results[i])});
+						data2.push({date: dates[i], result: Number(results2[i])});
 				}
-				console.log(data[0]);
 				graph.setData(data);
-				$("#title").text(product.split(".")[0])
+				graph2.setData(data2);
+				$("#title").text(product.split(".")[0]);
 				
 		}).fail(function(err){
-				console.log("Hi");
 				console.log(err);
 		});
 }
 var graph;
+var graph2;
 	  var product = $("#product").val();
 		console.log(product)
 		$.get({
@@ -45,13 +46,14 @@ var graph;
 				}
 		}).done(function(output, status){
 				var obj = JSON.parse(output);
-				console.log(obj[0]);
-				console.log(obj[1]);
 				dates = obj[1].split(" ");
 				results = obj[0].split(" ");
+				results2 = obj[2].split(" ");
 				data = []
+				data2 = []
 				for(i=0; i< dates.length; i++){
 						data.push({date: dates[i], result: Number(results[i])})
+						data2.push({date: dates[i], result: Number(results2[i])})
 				}
 				console.log(data[0]);
 						graph = new Morris.Line({
@@ -59,7 +61,18 @@ var graph;
 							data: data,
 							xkey: 'date',
 							ykeys: ['result'],
-							labels:['Sentiment Levels']
+								labels:['Sentiment Levels'],
+								ymin: 0,
+								ymax: 5
+						});
+				graph2 = new Morris.Line({
+							element: 'graph2',
+							data: data2,
+							xkey: 'date',
+							ykeys: ['result'],
+						labels:['Sentiment Levels'],
+						ymin: 0,
+						ymax: 5
 						});
 				$("#title").text(product.split(".")[0])
 				
