@@ -9,15 +9,18 @@ $("#view").on("submit", function(event){
 });
 
 function changeGraph() {
-		var product = $("#product").value;
-		$.get([{
+		var product = $("#product").val();
+		console.log(product)
+		$.get({
 				url: "../php/data.php",
 				data: {
 						product: product
 				}
-		}]).done(function(data, status){
-				console.log(output)
+		}).done(function(output, status){
+				var obj = JSON.parse(output);
+				console.log(obj);
 		}).fail(function(err){
+				console.log("Hi");
 				console.log(err);
 		});
 }

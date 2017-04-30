@@ -2,8 +2,8 @@
 
 $file = $_GET["product"];
 
-exec('python ../../results/compile.py '.$file, $output, $return_val);
+exec('python ../../results/compile.py ../../results/'.$file.' sentiment', $output, $return_val);
 
-echo $return_val;
+print json_encode($output);
 
 ?>
