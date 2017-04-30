@@ -74,7 +74,15 @@ var graph2;
 						ymin: 0,
 						ymax: 5
 						});
-				$("#title").text(product.split(".")[0])
+                
+                var title = product.split(".")[0].split("_")
+                var fixed_title = ""
+                for (i = 0; i < length(title); i++) {
+                    var first_letter = ttitle[i].charAt(0)
+                    first_letter = first_letter.concat()
+                    fixed_title = first_letter.toUpperCase().concat(title[i][1:].concat(" ")) 
+                }
+				$("#title").text(fixed_title)
 				
 		}).fail(function(err){
 				console.log("Hi");
