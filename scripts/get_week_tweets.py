@@ -74,16 +74,16 @@ def main():
     # retrieve the api object
     api = tweepy.API(auth)
 
-    tweets = [status for status in tweepy.Cursor(api.search, q=sys.argv[1], since_id='2017-01-01').items()]    
+    tweets = [status for status in tweepy.Cursor(api.search, q=sys.argv[1], since = "2017-04-23", until = "2017-05-01", lang = "en", count=100).items()]    
 
-    lim_tweets = {}
+    lim_tweets = []
 
     for tweet in tweets:
         tweet_json = json.dumps(tweet._json)
         tweet_json = json.loads(tweet_json)
 
         tweet_json_limited = {}
-        tweet_json_limited['text'] = tweet_json['text']
+        tweet_json_limited['text'] = tweet_json['text'].encode('utf-8')
         tweet_json_limited['id'] = tweet_json['id']
         tweet_json_limited['created_at'] = tweet_json['created_at']
         lim_tweets.append(tweet_json_limited)

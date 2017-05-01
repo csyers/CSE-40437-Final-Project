@@ -91,7 +91,13 @@ def separate_tweets_by_day(tweets):
     
     count_by_day = {}
     for date in tweets_by_day:
-        count_by_day[date] = len(tweets_by_day[date])
+        if retweets:
+            count = 0
+            for tweet in tweets_by_day[date]:
+                count += 1 + tweet['retweets']
+            count_by_day[date] = count
+        else:
+            count_by_day[date] = len(tweets_by_day[date])
     # return the dictionary of date objects --> list of tweets
     return tweets_by_day, count_by_day
 
