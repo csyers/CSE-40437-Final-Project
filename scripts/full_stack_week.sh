@@ -2,8 +2,6 @@
 
 
 keyword=$1
-start_date=$2 
-end_date=$3
 outfile=${keyword// /_}
 tweet_outfile="${outfile}.json"
 csv_outfile="${outfile}.csv"
