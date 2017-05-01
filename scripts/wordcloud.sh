@@ -8,4 +8,4 @@ ${DIR}/create_word_cloud_file.py $1
 eval 'python2 ${DIR}/./wordcloud_cli.py --imagefile $2 --text temp.txt --background "rgb(255,255,255)" --no_collocations'
 
 # remove the temporary file
-rm ${DIR}/temp.txt
+rm temp.txt
