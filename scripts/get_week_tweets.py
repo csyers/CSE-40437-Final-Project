@@ -68,13 +68,18 @@ def main():
     access_token_secret = "HDeeh7giVDGpdaGVQqnmplXbabr2oM2FJU1HyIqmuEmpo"
 
     # set up authorization
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
+    auth = tweepy.AppAuthHandler(consumer_key, consumer_secret)
+    #auth.set_access_token(access_token, access_token_secret)
 
     # retrieve the api object
-    api = tweepy.API(auth)
+    api = tweepy.API(auth,wait_on_rate_limit=False,wait_on_rate_limit_notify=True)
 
-    tweets = [status for status in tweepy.Cursor(api.search, q=sys.argv[1], since = "2017-04-23", until = "2017-05-01", lang = "en", count=100).items()]    
+    try:
+        tweets = [status for status in tweepy.Cursor(api.search, q=sys.argv[1], since = "2017-04-23", until = "2017-05-01", lang = "en", count=100).items()]    
+    except:
+        pass
+
+    print(len(tweets))
 
     lim_tweets = []
 
@@ -83,7 +88,7 @@ def main():
         tweet_json = json.loads(tweet_json)
 
         tweet_json_limited = {}
-        tweet_json_limited['text'] = tweet_json['text'].encode('utf-8')
+        tweet_json_limited['text'] = tweet_json['text']
         tweet_json_limited['id'] = tweet_json['id']
         tweet_json_limited['created_at'] = tweet_json['created_at']
         lim_tweets.append(tweet_json_limited)
