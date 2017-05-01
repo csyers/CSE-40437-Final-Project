@@ -21,14 +21,18 @@ function changeGraph() {
 				dates = obj[1].split(" ");
 				results = obj[0].split(" ");
 				results2 = obj[2].split(" ");
+				count = obj[3].split(" ");
 				data = []
 				data2 = []
+				data3 = []
 				for(i=0; i< dates.length; i++){
 						data.push({date: dates[i], result: Number(results[i])});
 						data2.push({date: dates[i], result: Number(results2[i])});
+						data3.push({date: dates[i], result: Number(count[i])});
 				}
 				graph.setData(data);
 				graph2.setData(data2);
+				graph3.setData(data3);
 				                var title = product.split(".")[0].split("_")
                 for (i = 0; i < title.length; i++) {
 										title[i] = title[i].charAt(0).toUpperCase() + title[i].substring(1);
@@ -45,6 +49,7 @@ function changeGraph() {
 }
 var graph;
 var graph2;
+var graph3;
 	  var product = $("#product").val();
 		console.log(product)
 		$.get({
@@ -57,11 +62,14 @@ var graph2;
 				dates = obj[1].split(" ");
 				results = obj[0].split(" ");
 				results2 = obj[2].split(" ");
+				count = obj[3].split(" ");
 				data = []
 				data2 = []
+				data3 = []
 				for(i=0; i< dates.length; i++){
 						data.push({date: dates[i], result: Number(results[i])})
 						data2.push({date: dates[i], result: Number(results2[i])})
+						data3.push({date: dates[i], result: Number(count[i])})
 				}
 				console.log(data[0]);
 						graph = new Morris.Line({
@@ -78,11 +86,17 @@ var graph2;
 							data: data2,
 							xkey: 'date',
 							ykeys: ['result'],
-						labels:['Sentiment Levels'],
-						ymin: 0,
-						ymax: 5
+						labels:['Sentiment Levels']
 						});
-                
+
+				graph3 = new Morris.Line({
+							element: 'graph3',
+							data: data3,
+							xkey: 'date',
+							ykeys: ['result'],
+						labels:['Tweets Collected']
+						});
+
                 var title = product.split(".")[0].split("_")
                 for (i = 0; i < title.length; i++) {
 										title[i] = title[i].charAt(0).toUpperCase() + title[i].substring(1);
