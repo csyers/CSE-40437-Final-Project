@@ -7,6 +7,13 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+		    <!-- Grabph -->
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
 		<link rel="stylesheet" type="text/css" href="../css/theme.css">
 		<link rel="stylesheet" type="text/css" href="../css/theme.css">
 		<title> CSE40437 - Product Tracker and Prediction </title>
@@ -53,35 +60,65 @@
 </section>
 <!-- ======= Jumbotron ====== -->
 
-<!-- ======= Team ====== -->
-<section id="team" class="dark">
-	<div class="container text-center">
-		<h1>The Hype Train Team</h1>
-		<br />
-		<div class="col-sm-4 ">
-			<img src="../images/Syers.jpg" class="img-responsive img-circle" >
-			<h2>Chris Syers</h2>
-			<p>Senior</p>
-		</div>
-		<div class="col-sm-4 ">
-			<img src="../images/Allie.jpg" class="img-responsive img-circle" >
-			<h2>Allie Olshefke</h2>
-			<p>Junior</p>
-		</div>
-		<div class="col-sm-4 ">
-			<img src="../images/Scary.jpg" class="img-responsive img-circle" >
-			<h2>Chris Scaramella</h2>
-			<p>Junior</p>
-		</div>
+<!-- ======= Form ======== -->
+<section id="form">
+	<div class="container text-left">
+		<form role="form" id="view">
+			<div class="form-group">
+				<label for="newterm">Add a product to our search list:</label>
+				<input type="text" class="form-control" id="newterm" placeholder="e.g. Nintendo Switch">
+			</div>
+			<button type="submit" class="btn btn-default">Add</button>
+</form>
+</div>
+</section>
+
+<!-- ======= Form ======== -->
+
+
+
+
+<!-- ======= Grabph ====== -->
+<section>
+<div class="container-fluid text-center">
+	<h2 id = "title"></h2></div>
+<div class="col-sm-6 text-center">
+	<label class="label label-success">AFINN Sentiment Analysis</label>
+	<div id="graph"></div>
+</div>
+<div class="col-sm-6 text-center">
+		<label class="label label-success">VADER Sentiment Analysis</label>
+	<div id="graph2"></div>
+</div>
+<div class = "container-fluid text-center">
+	<h2>Tweets Collected</h2></div>
+	<div id="graph3"></div>
+</section>
+<!-- ======= Grabph ====== -->
+
+
+<!---- ===== Word Cloud ====== -->
+<section>
+<div class="container-fluid text-center">
+	<h2>Word Cloud</h2></div>
+<div class="container-fliud text-center">
+	<img id="word_cloud" width=80%></img>
 	</div>
-</section>	
-<!-- ======= Team ====== -->
+
+
+
+
+<!---- ===== Word Cloud ====== -->
+
+
 
 <!-- jQuery library -->
 <script src="http://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 				integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="../scripts/ndata.js"></script>
 
 </body>
 
