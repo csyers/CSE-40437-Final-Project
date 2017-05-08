@@ -37,10 +37,9 @@
                     <li><a href="add.html">ADD</a></li>
                     <li><a href="data.html">COLLECTED DATA</a></li>
 										<li><a href="ndata.html">NEW DATA</a></li>
-                    <li><a href="about.html">ABOUT</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                	<li><a class="navbar-brand" href="settings.html"><span class="glyphicon glyphicon-cog"></span></a></li>
+                	<li><a class="navbar-brand" href="../index.html"><span class="glyphicon glyphicon-cog"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -65,10 +64,25 @@
 	<div class="container text-left">
 		<form role="form" id="view">
 			<div class="form-group">
-				<label for="newterm">Search for a product:</label>
+				<label  for="newterm">Search for a product:</label>
 				<input type="text" class="form-control" id="newterm" placeholder="e.g. Nintendo Switch">
+				</div>
+			<div class="col-sm-6">
+				<label  for="startdate">From:</label>
+				<input type="text" class="form-control" id="startdate" placeholder="2017-04-26">
 			</div>
-			<button type="submit" class="btn btn-default">Analyze (past week)</button>
+			<div class="col-sm-6">
+				<label  for="enddate">To:</label>
+				<input type="text" class="form-control" id="enddate" placeholder="2017-05-01">
+				</div>
+
+			</div>
+			</div>
+			<div class="container">
+				<button type="submit" class="btn btn-default" onclick="dateRange();">Analyze (date range)</button>
+				
+				<button type="submit" class="btn btn-default" onclick="weekRange();">Analyze (past week)</button>
+				</div>
 </form>
 </div>
 </section>
